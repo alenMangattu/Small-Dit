@@ -25,7 +25,6 @@ def load_dataset_streaming(dataset_name: str, num_samples: int = 5000) -> List[D
     
     except Exception as e:
         print(f"❌ Error loading dataset: {e}")
-        # Fallback to alternative dataset
         print("Trying alternative dataset...")
         return load_dataset_streaming("conceptual_captions", num_samples=1000)
 
@@ -57,7 +56,6 @@ def get_sample(samples: List[Dict], index: int) -> Dict[str, Any]:
     if 0 <= index < len(samples):
         sample = samples[index]
         
-        # Standardize the output format
         output = {
             'index': index,
             'prompt': sample.get('prompt', sample.get('caption', 'No prompt')),
@@ -66,15 +64,12 @@ def get_sample(samples: List[Dict], index: int) -> Dict[str, Any]:
             'output_image': None
         }
         
-        # Handle different dataset formats
         if 'target_image' in sample:
-            # MetaQuery format - actual image objects
             output['output_image'] = sample['target_image']
             if 'source_images' in sample and len(sample['source_images']) > 0:
                 output['input_image'] = sample['source_images'][0]
         
         elif 'image_url' in sample or 'image' in sample:
-            # URL-based format - download images
             url = sample.get('image_url') or sample.get('image')
             output['output_image'] = download_image(url)
         
@@ -113,15 +108,11 @@ def get_batch(samples: List[Dict], indices: List[int]) -> Dict[str, List]:
     return batch
 
 
-# Quick usage example:
 if __name__ == "__main__":
-    # Load first 100 samples
     samples = load_dataset_streaming("conceptual_captions", num_samples=100)
     
-    # Get single sample
     sample = get_sample(samples, 0)
     print(f"Sample 0: {sample['prompt']}")
     
-    # Get batch
     batch = get_batch(samples, [0, 1, 2, 3, 4])
     print(f"Batch size: {len(batch['prompts'])}") 

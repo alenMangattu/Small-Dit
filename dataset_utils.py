@@ -1,8 +1,3 @@
-"""
-Dataset Utility Functions for Image-Text Datasets
-Clean implementation with no bloatware
-"""
-
 from datasets import load_dataset
 from itertools import islice
 import matplotlib.pyplot as plt

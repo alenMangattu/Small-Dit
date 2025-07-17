@@ -1,2 +1,1 @@
-# Small-Vit
-Implemenation of a vision transformer from scrach in python torch
+ this is not an official implementation of the DiT paper, just a side project for educational purposes.
